@@ -39,3 +39,18 @@ By default `start` detaches from the controlling terminal. With
 and exits with status 0 on Unix-like systems. Windows builds trap Ctrl-C,
 Ctrl-Break, console close/logoff/shutdown events, and C runtime `SIGTERM` where
 the runtime delivers it.
+
+## GitHub Actions runner hooks
+
+`action-runner-hooks/job-started.{sh,ps1}` stops existing `a1-pol-mem`
+processes before a job starts.
+
+`action-runner-hooks/job-completed.{sh,ps1}` starts `a1-pol-mem` after a job
+completes. It defaults to `50` percent memory usage. Override that with
+`A1_POL_MEM_PERCENT`.
+
+The completed hook locates the binary in this order:
+
+1. `A1_POL_MEM_BIN`
+2. recursive search from the repository root when `.git` is present
+3. `PATH`
